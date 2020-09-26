@@ -1,0 +1,4 @@
+www.fortune888.com.tw:443
+tw.yahoo.com:443
+www.google.com.tw:443
+www.funtown.com.tw:443

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#要檢查的網站url和使用https功能的port
+website='www.fortune888.com.tw'
+port_no='443'
+
+#檢查日期
+nowdate=$(date '+%x%X')
+nowdate_unix=$(date +%s)
+expiredate=$(echo | openssl s_client -connect $website:$port_no 2>/dev/null | openssl x509 -noout -dates | grep notAfter | cut -d "=" -f2)
+expiredate_unix=$(date -d "$expiredate" +%s)
+date_total=$(($expiredate_unix-$nowdate_unix))
+
+#警戒值為秒數, 若是在90天內要提醒就要輸入7776000(60x60x24x90)
+threshold='94608000'
+
+#判斷$datetotal值小於警戒值就提醒
+
+if [ "$(echo $date_total)" -le "$threshold" ];
+then
+   echo "今天是$nowdate, 該換網站的憑證囉！"
+
+else
+   echo "今天是$nowdate, 恭喜你憑證還沒到期^^"
+
+fi
+
+
+echo | openssl s_client -connect 192.168.10.133:443 2>/dev/null | openssl x509 -noout -dates | grep notAfter | cut -d "=" -f2

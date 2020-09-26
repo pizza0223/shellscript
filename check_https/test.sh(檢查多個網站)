@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#檢查日期（換成unix time）
+nowdate=$(date '+%x%X')
+nowdate_unix=$(date +%s)
+
+#警戒值為秒數, 若是在90天內要提醒就要輸入7776000(60x60x24x90)
+threshold='7776000'
+
+#判斷datetotal值小於threshold值就提醒
+
+echo "檢查日期：$nowdate"
+
+for website in $(cat ./check_https/website_dn.txt)
+do
+   expiredate=$(echo | openssl s_client -connect $website 2>/dev/null | openssl x509 -noout -dates | grep notAfter | cut -d "=" -f2)
+   expiredate_unix=$(date -d "$expiredate" +%s)
+   date_total=$(($expiredate_unix-$nowdate_unix))
+   if [ "$(echo $date_total)" -le "$threshold" ];
+   then
+      echo "$website 該換網站的憑證囉！"
+
+   else
+      echo "$website 憑證還沒到期^^"
+
+   fi
+done
