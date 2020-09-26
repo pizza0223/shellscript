@@ -5,7 +5,7 @@ work_dir="/usr/lib64/nagios/plugins"
 tmp_dir=${work_dir}/tmp
 
 esxi_server_arr=(esx02 esx03 esx06 esx07 esx08 esx09)
-ntp_server='gm12.gomaji.com'
+ntp_server='ntpserver'
 time_diff_thold=1
 
 rm -f ${tmp_dir}/*
