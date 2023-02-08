@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: self-plugin
+    image: neil605164/drone-plugin-ex
+    settings:
+      hello: "Wow"
+    commands:
+    - echo $PLUGIN_HELLO                 
+    when:
+      branch:
+      - master
+trigger:
+  branch: 
+  - master
+  event:
+  - push
